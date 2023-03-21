@@ -1,13 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+
+import '../Models/user.dart';
 
 class CardView extends StatelessWidget {
   const CardView({ Key? key,
-    required this.itemName,
-    required this.itemHistory,
-    required this.imageURI }) : super(key: key);
-  final String itemName;
-  final String itemHistory;
-  final String imageURI;
+   required this.user}) : super(key: key);
+    final User user;
 
   @override
   Widget build(BuildContext context){
@@ -24,17 +24,15 @@ class CardView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(itemName, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
-                  Text(itemHistory),
+                  Text(user.userName, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+                  Text(user.userHistory),
                 ],
               ),
             ),
-            Image(
-              image: AssetImage(imageURI),
+            Image.memory(base64Decode(user.userPhoto),
               height: 80,
               width: 80,
-              fit: BoxFit.cover,
-            ),
+              fit: BoxFit.cover,)
           ],
         ),
       ),

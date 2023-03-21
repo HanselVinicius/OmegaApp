@@ -6,9 +6,9 @@ import 'Screens/form_screen.dart';
 import 'Screens/home_page.dart';
 
 void main() {
-  //
-  // UserService userService = UserService();
-  // print("pegou?: ${userService.getAll()}");
+
+  UserService userService = UserService();
+  print("pegou?: ${userService.getAll()}");
   runApp(ChangeNotifierProvider(
     create: (context) => UserProvider(),
     child: const MyApp(),));
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       initialRoute: 'home',
       routes: {
         'home':(context) => const HomePage(),
-        'form':(context) =>  FormScreen()
+        'form':(context) =>  const FormScreen()
       },
     );
   }

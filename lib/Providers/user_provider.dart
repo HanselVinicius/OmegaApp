@@ -7,7 +7,7 @@ import '../Models/user.dart';
 
 class UserProvider extends ChangeNotifier{
   List<User> _list = [];
-  final UserService userService = UserService();
+  final UserService _userService = UserService();
 
   UnmodifiableListView<User> get list => UnmodifiableListView(_list);
 
@@ -23,6 +23,18 @@ class UserProvider extends ChangeNotifier{
   void remove(User user){
     _list.remove(user);
     notifyListeners();
+  }
+
+  Future<List<User>> fetch() async{
+    try{
+      final List<User> users = await _userService.getAll();
+      _list = users;
+      saveAll(users);
+      return _list;
+    }catch(e){
+      print('error: $e');
+      throw e;
+    }
   }
 
 }
