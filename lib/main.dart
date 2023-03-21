@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:omega_app/Providers/user_provider.dart';
 import 'package:omega_app/Services/user_service.dart';
 import 'package:provider/provider.dart';
+import 'Screens/form_screen.dart';
 import 'Screens/home_page.dart';
 
 void main() {
-
-  UserService userService = UserService();
-  print("pegou?: ${userService.getAll()}");
+  //
+  // UserService userService = UserService();
+  // print("pegou?: ${userService.getAll()}");
   runApp(ChangeNotifierProvider(
     create: (context) => UserProvider(),
     child: const MyApp(),));
@@ -26,6 +27,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const HomePage(),
+      initialRoute: 'home',
+      routes: {
+        'home':(context) => const HomePage(),
+        'form':(context) =>  FormScreen()
+      },
     );
   }
 }

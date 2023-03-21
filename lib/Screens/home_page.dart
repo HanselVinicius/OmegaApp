@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:omega_app/utils/utils.dart';
 import '../Components/card_view.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
-
 
 
   @override
@@ -21,6 +22,10 @@ class HomePage extends StatelessWidget {
         },
       itemCount: items.length,
       ),
+    floatingActionButton: FloatingActionButton(onPressed: () {
+      midiaPermision(context);
+      Navigator.of(context).popAndPushNamed('form');
+    },child: const Icon(Icons.add)),
     );
   }
 }
