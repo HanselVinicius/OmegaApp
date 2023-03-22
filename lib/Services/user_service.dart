@@ -36,5 +36,22 @@ class UserService{
 
    }
 
+   Future<bool> post(User user) async{
+      String jsonUser = jsonEncode(user.toMap());
+      http.Response response = await client.post(
+         Uri.parse(getUrl()),
+         headers: {
+            'Content-type':'application/json'
+         },
+         body: jsonUser
+      );
+
+      if(response.statusCode != 201){
+         throw HttpException(response.body);
+      }
+      return true;
+
+   }
+
 
 }

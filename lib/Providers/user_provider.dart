@@ -1,6 +1,8 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
+import 'package:omega_app/Exceptions/fail_register_user.dart';
+import 'package:omega_app/Exceptions/no_fetched_user.dart';
 import 'package:omega_app/Services/user_service.dart';
 
 import '../Models/user.dart';
@@ -32,9 +34,20 @@ class UserProvider extends ChangeNotifier{
       saveAll(users);
       return _list;
     }catch(e){
-      print('error: $e');
-      throw e;
+
+      throw NoUserFetchedException();
     }
   }
+
+  void userRegister({required String userName, required userPhoto}){
+    try{
+      _userService.post(User(userName: userName, userPhoto: userPhoto));
+
+    }catch(ex){
+        throw FailRegisterUserException();
+    }
+    notifyListeners();
+  }
+
 
 }

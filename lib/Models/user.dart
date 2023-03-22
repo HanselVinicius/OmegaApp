@@ -1,13 +1,13 @@
 class User{
   // String id;
   String userName;
-  String userHistory;
+  String? userHistory;
   String userPhoto;
 
 
   User({
     required this.userName,
-    required this.userHistory,
+     this.userHistory,
     required this.userPhoto
   });
 
@@ -20,7 +20,8 @@ class User{
 
   Map<String, dynamic> toMap(){
     return{
-
+        'name':userName,
+        'photo':userPhoto,
     };
   }
 

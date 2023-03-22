@@ -6,6 +6,6 @@ class WebClient{
   static const url = "http://192.168.88.108:5050";
   http.Client client = InterceptedClient.build(
       interceptors: [LogginInterceptor()],
-      requestTimeout: const Duration(seconds: 5),);
+      requestTimeout: const Duration(seconds: 30),);
 
 }

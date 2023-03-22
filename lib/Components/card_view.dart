@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -25,11 +26,11 @@ class CardView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(user.userName, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
-                  Text(user.userHistory),
+                  Text(user.userHistory.toString()),
                 ],
               ),
             ),
-            Image.memory(base64Decode(user.userPhoto),
+            Image.memory(const Base64Decoder().convert(user.userPhoto),
               height: 80,
               width: 80,
               fit: BoxFit.cover,)

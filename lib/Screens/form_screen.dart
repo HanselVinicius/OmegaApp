@@ -1,6 +1,8 @@
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:omega_app/Providers/user_provider.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key});
@@ -12,29 +14,28 @@ class FormScreen extends StatefulWidget {
 class FormScreenState extends State<FormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _registroController = TextEditingController();
-  String _pathController = '';
-    
+
   @override
   void dispose() {
     _nameController.dispose();
-    _registroController.dispose();
     // _imageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    dynamic pathController;
+    UserProvider userProvider = UserProvider();
 
-    Future<String> pickImage({required bool isCamera}) async {
+    Future<XFile> pickImage({required bool isCamera}) async {
       ImagePicker picker = ImagePicker();
-      XFile? pickedFile = await picker.pickImage(source: (isCamera) ? ImageSource.camera : ImageSource.gallery );
-      if(pickedFile != null){
-        return pickedFile.path;
+      XFile? pickedFile = await picker.pickImage(
+          source: (isCamera) ? ImageSource.camera : ImageSource.gallery);
+      if (pickedFile != null) {
+        return pickedFile;
       }
-      return 'sem imagem';
+      throw Exception();
     }
-
 
     return Scaffold(
       appBar: AppBar(
@@ -54,8 +55,7 @@ class FormScreenState extends State<FormScreen> {
                   icon: Icon(Icons.person),
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue,width: 2.0)
-                  ),
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0)),
                 ),
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -64,57 +64,55 @@ class FormScreenState extends State<FormScreen> {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: _registroController,
-                decoration: const InputDecoration(
-                  labelText: 'Dia do Registro',
-                  icon: Icon(Icons.access_time),
-                  border: OutlineInputBorder(),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue,width: 2.0)
-                  ),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Por Favor coloque o ultimo registro';
-                  }
-                  return null;
-                },
-              ),
-               Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: ElevatedButton(onPressed: () async{
-                          final pickedImage = await pickImage(isCamera: false);
-                          _pathController = pickedImage;
-                        },
-                          child: const Icon(Icons.image_outlined),
-                        ),
-                      ),
-                      ElevatedButton(onPressed: () async{
-                        final pickedImage = await pickImage(isCamera: true);
-                        _pathController = pickedImage;
-
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final XFile? imageFile =
+                            await pickImage(isCamera: false);
+                        if (imageFile != null) {
+                          final pickedImage = await imageFile.readAsBytes();
+                          if (pickedImage != null) {
+                            pathController = pickedImage;
+                          }
+                        }
                       },
-                        child: const Icon(Icons.camera),
-                      ),
-                    ]
+                      child: const Icon(Icons.image_outlined),
+                    ),
                   ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final XFile? imageFile = await pickImage(isCamera: true);
+                      if (imageFile != null) {
+                        final pickedImage = await imageFile.readAsBytes();
+                        if (pickedImage != null) {
+                          pathController = pickedImage;
+                        }
+                      }
+                    },
+                    child: const Icon(Icons.camera),
+                  ),
+                ]),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // do something with the form data
                       String name = _nameController.text;
-                      String registro = _registroController.text;
-                      String foto = _pathController;
-
+                      String foto = base64Encode(pathController);
+                      userProvider.userRegister(
+                          userName: name, userPhoto: foto);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Salvando usuario'),
+                        ),
+                      );
+                      Navigator.popAndPushNamed(context, 'home');
                     }
                   },
                   child: const Text('Adcionar'),
