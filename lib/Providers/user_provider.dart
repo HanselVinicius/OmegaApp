@@ -32,6 +32,7 @@ class UserProvider extends ChangeNotifier{
       final List<User> users = await _userService.getAll();
       _list = users;
       saveAll(users);
+      print('fetchei');
       return _list;
     }catch(e){
 
