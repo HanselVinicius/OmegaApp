@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:omega_app/Components/confirmation_dialog.dart';
 
 import '../Models/user.dart';
 
@@ -37,6 +38,9 @@ class CardView extends StatelessWidget {
           ],
         ),
       ),
-    );
+    onLongPress: () {
+      print('A BOSTA DO NOME É : ${user.userName}');
+      showConfirmationDialog(context);
+    },);
   }
 }

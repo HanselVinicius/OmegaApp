@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:omega_app/Providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'Screens/config_screen.dart';
 import 'Screens/form_screen.dart';
 import 'Screens/home_page.dart';
 
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
       initialRoute: 'home',
       routes: {
         'home':(context) => const HomePage(),
-        'form':(context) =>  const FormScreen()
+        'form':(context) =>  const FormScreen(),
+        'config':(context) => const ConfigScreen()
       },
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:omega_app/Components/drawer_drawer_view.dart';
 import 'package:omega_app/Models/user.dart';
 import 'package:omega_app/Providers/user_provider.dart';
 import 'package:omega_app/utils/utils.dart';
@@ -30,36 +31,42 @@ class _HomePageState extends State<HomePage> {
               });
             },
             icon: const Icon(
-              Icons.settings,
+              Icons.refresh,
               color: Colors.white,
             ),
           )
         ],
       ),
-      body: Consumer<UserProvider>(
-        builder:(context, value, child) {
-         return FutureBuilder<List<User>>(
-            future: users,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                final List<User> users = snapshot.data!;
-                return ListView.builder(
-                  controller: scrollController,
-                  itemCount: users.length,
-                  itemBuilder: (context, index) {
-                    return CardView(user: snapshot.data![index]);
-                  },
-                );
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-          );
-        },
+      body: Padding(
+        padding: const EdgeInsets.only(top: 8,bottom: 30),
+        child: Consumer<UserProvider>(
+          builder:(context, value, child) {
+           return FutureBuilder<List<User>>(
+              future: users,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final List<User> users = snapshot.data!;
+                  return ListView.builder(
+                    controller: scrollController,
+                    itemCount: users.length,
+                    itemBuilder: (context, index) {
+                      return CardView(user: snapshot.data![index]);
+                    },
 
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            );
+          },
+        ),
       ),
+
+    drawer: const LeftDrawer(),
+
       floatingActionButton: FloatingActionButton(
           onPressed: () {
             midiaPermision(context);
