@@ -72,7 +72,7 @@ class FormScreenState extends State<FormScreen> {
                     padding: const EdgeInsets.only(right: 10),
                     child: ElevatedButton(
                       onPressed: () async {
-                        final XFile? imageFile =
+                        final XFile imageFile =
                             await pickImage(isCamera: false);
                         if (imageFile != null) {
                           final pickedImage = await imageFile.readAsBytes();

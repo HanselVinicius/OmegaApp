@@ -23,6 +23,7 @@ class UserProvider extends ChangeNotifier{
   }
 
   void remove(User user){
+    _userService.deleteUser(user);
     _list.remove(user);
     notifyListeners();
   }

@@ -39,8 +39,9 @@ class CardView extends StatelessWidget {
         ),
       ),
     onLongPress: () {
-      print('A BOSTA DO NOME É : ${user.userName}');
-      showConfirmationDialog(context);
+      // print('A BOSTA DO NOME É : ${user.userName}');
+
+      showConfirmationDialog(context,user: user);
     },);
   }
 }

@@ -13,9 +13,10 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   @override
   Widget build(BuildContext context) {
+
     final ScrollController scrollController = ScrollController();
     UserProvider userProvider = UserProvider();
     Future<List<User>> users = userProvider.fetch();
@@ -70,7 +71,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
           onPressed: () {
             midiaPermision(context);
-            Navigator.of(context).popAndPushNamed('form');
+            Navigator.of(context).pushNamed('form');
           },
           child: const Icon(Icons.add)),
     );

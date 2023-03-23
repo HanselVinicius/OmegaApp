@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:omega_app/Providers/user_provider.dart';
+
+import '../Models/user.dart';
 
 Future<dynamic> showConfirmationDialog(
     BuildContext context, {
       String title = "Atenção!",
       String content = "Deseja apagar esta entrada?",
       String affirmativeOption = "Confirmar",
+      required User user
     }) {
   return showDialog(
       context: context,
@@ -15,12 +19,14 @@ Future<dynamic> showConfirmationDialog(
           actions: [
             TextButton(
               onPressed: () {
+
                 Navigator.pop(context,false);
               },
               child: const Text("Cancelar"),
             ),
             TextButton(
               onPressed: () {
+                UserProvider().remove(user);
                 Navigator.pop(context, true);
               },
               child: Text(

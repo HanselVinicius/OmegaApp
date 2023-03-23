@@ -53,5 +53,25 @@ class UserService{
 
    }
 
+   Future<bool> deleteUser(User user)async {
+      Map<String,dynamic>mapped = {
+      'name':user.userName
+      };
+      String jsonUser = jsonEncode(mapped);
+      http.Response response = await client.delete(Uri.parse(getUrl(),),
+      headers: {
+         'Content-type':'application/json',
+      },
+         body: jsonUser
+      );
+
+      if (response.statusCode != 200){
+         throw HttpException(response.body);
+      }
+      return true;
+
+
+   }
+
 
 }
