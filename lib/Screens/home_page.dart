@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
             },
             icon: const Icon(
               Icons.refresh,
-              color: Colors.white,
+              color: Colors.black,
             ),
           )
         ],

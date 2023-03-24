@@ -10,20 +10,14 @@ class ConfigScreen extends StatefulWidget {
 
 class _ConfigScreenState extends State<ConfigScreen> {
   final _formKey = GlobalKey<FormState>();
-  late String _text;
+  final _ipController = TextEditingController();  
 
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      WebClient.url = _text;
-      Navigator.popAndPushNamed(context, 'home');
-
-    }
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Config'),
+      appBar: AppBar(title:  Text(WebClient.url),
      leading: IconButton(icon: const Icon(Icons.arrow_back),onPressed: () {
        Navigator.popAndPushNamed(context, 'home');
      },), ),
@@ -35,21 +29,29 @@ class _ConfigScreenState extends State<ConfigScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
+                controller: _ipController,
                 decoration: const InputDecoration(labelText: 'IP'),
+
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Por favor coloque algum IP';
                   }
+                  
                   return null;
                 },
-                onSaved: (value) {
-                  _text = value!;
-                },
+                
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: _submitForm,
-                child: Text('Submit'),
+                onPressed: () {
+                  if(_formKey.currentState!.validate()){
+                    WebClient.url = _ipController.text;
+                    Navigator.popAndPushNamed(context, 'home');
+                  }
+
+
+                },
+                child: const Text('Enviar'),
               ),
             ],
           ),
