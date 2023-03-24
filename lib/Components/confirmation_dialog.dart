@@ -8,7 +8,8 @@ Future<dynamic> showConfirmationDialog(
       String title = "Atenção!",
       String content = "Deseja apagar esta entrada?",
       String affirmativeOption = "Confirmar",
-      required User user
+      required User user,
+      required Function(User) onDelete,
     }) {
   return showDialog(
       context: context,
@@ -26,7 +27,7 @@ Future<dynamic> showConfirmationDialog(
             ),
             TextButton(
               onPressed: () {
-                UserProvider().remove(user);
+                onDelete(user);
                 Navigator.pop(context, true);
               },
               child: Text(

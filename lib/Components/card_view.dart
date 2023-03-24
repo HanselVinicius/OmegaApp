@@ -8,9 +8,9 @@ import '../Models/user.dart';
 
 class CardView extends StatelessWidget {
   const CardView({ Key? key,
-   required this.user}) : super(key: key);
+   required this.user, required this.onDelete}) : super(key: key);
     final User user;
-
+    final Function(User) onDelete;
   @override
   Widget build(BuildContext context){
     return InkWell(
@@ -41,7 +41,7 @@ class CardView extends StatelessWidget {
     onLongPress: () {
       // print('A BOSTA DO NOME É : ${user.userName}');
 
-      showConfirmationDialog(context,user: user);
+      showConfirmationDialog(context,user: user, onDelete: onDelete);
     },);
   }
 }

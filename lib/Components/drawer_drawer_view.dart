@@ -8,9 +8,9 @@ class LeftDrawer extends StatelessWidget {
     return  Drawer(
       child: ListView(
         children:  [
-          const DrawerHeader(decoration: BoxDecoration(
-            color: Colors.blue
-          ), child: Text(''),),
+          // const DrawerHeader(decoration: BoxDecoration(
+          //   color: Colors.blue
+          // ), child: Text(''),),
 
 
           const ListTile(

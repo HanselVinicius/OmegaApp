@@ -22,7 +22,7 @@ class UserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  void remove(User user){
+  Future<void> remove(User user)async {
     _userService.deleteUser(user);
     _list.remove(user);
     notifyListeners();

@@ -17,9 +17,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   @override
   Widget build(BuildContext context) {
 
+
     final ScrollController scrollController = ScrollController();
     UserProvider userProvider = UserProvider();
     Future<List<User>> users = userProvider.fetch();
+
+    void rebuildHomePage() {
+      setState(() {
+        users = UserProvider().fetch();
+      });
+    }
     // List<CardView> items = [const CardView(itemName: 'teste', itemHistory: 'teste', imageURI: 'teste')];
     return Scaffold(
       appBar: AppBar(
@@ -51,7 +58,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                     controller: scrollController,
                     itemCount: users.length,
                     itemBuilder: (context, index) {
-                      return CardView(user: snapshot.data![index]);
+                      return CardView(user: snapshot.data![index],onDelete: (user) {
+                      UserProvider().remove(user).then((value) {
+                        rebuildHomePage();
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('User deleted'),),);
+                      });
+
+                      },);
                     },
 
                   );
