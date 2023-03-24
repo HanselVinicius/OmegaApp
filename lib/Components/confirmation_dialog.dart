@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:omega_app/Providers/user_provider.dart';
 
 import '../Models/user.dart';
 

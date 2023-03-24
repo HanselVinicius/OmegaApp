@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                       return CardView(user: snapshot.data![index],onDelete: (user) {
                       UserProvider().remove(user).then((value) {
                         rebuildHomePage();
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('User deleted'),),);
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Deletando Usuário...'),),);
                       });
 
                       },);
