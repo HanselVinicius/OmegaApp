@@ -3,7 +3,6 @@ import 'package:omega_app/Components/drawer_drawer_view.dart';
 import 'package:omega_app/Models/user.dart';
 import 'package:omega_app/Providers/user_provider.dart';
 import 'package:omega_app/utils/utils.dart';
-import 'package:provider/provider.dart';
 import '../Components/card_view.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,7 +17,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   Widget build(BuildContext context) {
 
 
-    final ScrollController scrollController = ScrollController();
+    // final ScrollController scrollController = ScrollController();
     UserProvider userProvider = UserProvider();
     Future<List<User>> users = userProvider.fetch();
 
@@ -31,51 +30,41 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     return Scaffold(
       appBar: AppBar(
         title: const Text('Omega'),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              setState(() {
-                users = userProvider.fetch();
-              });
-            },
-            icon: const Icon(
-              Icons.refresh,
-              color: Colors.black,
-            ),
-          )
-        ],
+
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 8,bottom: 30),
-        child: Consumer<UserProvider>(
-          builder:(context, value, child) {
-           return FutureBuilder<List<User>>(
-              future: users,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final List<User> users = snapshot.data!;
-                  return ListView.builder(
-                    controller: scrollController,
-                    itemCount: users.length,
-                    itemBuilder: (context, index) {
-                      return CardView(user: snapshot.data![index],onDelete: (user) {
-                      UserProvider().remove(user).then((value) {
-                        rebuildHomePage();
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Deletando Usuário...'),),);
-                      });
+      body: RefreshIndicator(
+        onRefresh: () async {
+          setState(() {
+            users = userProvider.fetch();
+          });
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8,bottom: 30),
+             child: FutureBuilder<List<User>>(
+                future: users,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final List<User> users = snapshot.data!;
+                    return ListView.builder(
+                      itemCount: users.length,
+                      itemBuilder: (context, index) {
+                        return CardView(user: snapshot.data![index],onDelete: (user) {
+                        UserProvider().remove(user).then((value) {
+                          rebuildHomePage();
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Deletando Usuário...'),),);
+                        });
 
-                      },);
-                    },
+                        },);
+                      },
 
-                  );
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
-            );
-          },
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
         ),
       ),
 
