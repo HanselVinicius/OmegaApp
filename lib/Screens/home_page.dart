@@ -3,6 +3,7 @@ import 'package:omega_app/Components/drawer_drawer_view.dart';
 import 'package:omega_app/Models/user.dart';
 import 'package:omega_app/Providers/user_provider.dart';
 import 'package:omega_app/utils/utils.dart';
+import 'package:provider/provider.dart';
 import '../Components/card_view.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,31 +41,38 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
         },
         child: Padding(
           padding: const EdgeInsets.only(top: 8,bottom: 30),
-             child: FutureBuilder<List<User>>(
-                future: users,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final List<User> users = snapshot.data!;
-                    return ListView.builder(
-                      itemCount: users.length,
-                      itemBuilder: (context, index) {
-                        return CardView(user: snapshot.data![index],onDelete: (user) {
-                        UserProvider().remove(user).then((value) {
-                          rebuildHomePage();
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Deletando Usuário...'),),);
-                        });
+             child: Consumer<UserProvider>(
+               builder: (context, value, child) {
 
-                        },);
-                      },
+               return FutureBuilder<List<User>>(
+                  future: users,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final List<User> users = snapshot.data!;
+                      return ListView.builder(
+                        itemCount: users.length,
+                        itemBuilder: (context, index) {
+                          return CardView(user: snapshot.data![index],onDelete: (user) {
+                          UserProvider().remove(user).then((value) {
+                            rebuildHomePage();
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Deletando Usuário...'),),);
+                          });
 
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
+                          },);
+                        },
+
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                );
+
+               },
+
+             ),
         ),
       ),
 
